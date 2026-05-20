@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matches Vision AI · Live Deriv Tracker</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:system-ui,sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh;}
+button{cursor:pointer;font-family:inherit;}
+input{font-family:inherit;}
+#tokenScreen{position:fixed;inset:0;background:linear-gradient(135deg,#0f172a,#1e3a8a);display:flex;align-items:center;justify-content:center;padding:20px;z-index:999;overflow-y:auto;}
+.tbox{background:#1e293b;border-radius:16px;padding:28px 24px;max-width:420px;width:100%;border:1px solid #334155;}
+.tlogo{font-size:22px;font-weight:800;color:#60a5fa;margin-bottom:4px;}
+.tsub{font-size:13px;color:#94a3b8;margin-bottom:18px;}
+.tsteps{background:#0f172a;border-radius:10px;padding:14px;margin-bottom:16px;border:1px solid #334155;}
+.tsteps p{font-size:12px;color:#94a3b8;line-height:2;}
+.tsteps a{color:#60a5fa;}
+.tlabel{font-size:13px;font-weight:600;color:#e2e8f0;margin-bottom:6px;}
+.tinput{width:100%;padding:10px 14px;border-radius:8px;border:1.5px solid #334155;background:#0f172a;color:#f1f5f9;font-size:14px;outline:none;margin-bottom:6px;}
+.tinput:focus{border-color:#3b82f6;}
+.thint{font-size:11px;color:#64748b;margin-bottom:14px;}
+.tbtn{width:100%;padding:11px;border-radius:8px;border:none;background:#3b82f6;color:#fff;font-size:15px;font-weight:700;}
+.tbtn:hover{background:#2563eb;}
+.tskip{width:100%;padding:9px;border-radius:8px;border:1px solid #334155;background:transparent;color:#94a3b8;font-size:13px;margin-top:8px;}
+.terr{font-size:11px;color:#f87171;margin-top:8px;text-align:center;min-height:16px;}
+#app{max-width:780px;margin:0 auto;padding:12px;}
+.card{background:#1e293b;border-radius:12px;padding:14px 16px;margin-bottom:12px;border:1px solid #334155;}
+.hdr{display:flex;align-items:center;justify-content:space-between;}
+.ttl{font-size:18px;font-weight:700;color:#f1f5f9;}
+.sub{font-size:12px;color:#64748b;margin-top:2px;}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px;background:#475569;}
+.dot.live{background:#22c55e;animation:pulse 1.5s infinite;}
+.dot.err{background:#ef4444;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.rbtn{font-size:12px;padding:6px 12px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#94a3b8;}
+.acct-bar{background:#052e16;border:1px solid #166534;border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;margin-top:10px;font-size:13px;color:#4ade80;}
+.logout-btn{font-size:11px;padding:3px 8px;border-radius:6px;border:1px solid #22c55e;background:transparent;color:#22c55e;}
+.irow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.ilab{font-size:12px;color:#64748b;}
+.ibtn{font-size:12px;padding:5px 13px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#94a3b8;}
+.ibtn.on{background:#3b82f6;border-color:#3b82f6;color:#fff;}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;}
+.tab{font-size:13px;padding:6px 14px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#94a3b8;}
+.tab.on{background:#3b82f6;color:#fff;font-weight:500;border-color:#3b82f6;}
+.pnl{display:none;}.pnl.on{display:block;}
+.mrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:14px;}
+.mc{background:#0f172a;border-radius:8px;padding:12px;border:1px solid #334155;}
+.ml{font-size:12px;color:#64748b;margin-bottom:3px;}
+.mv{font-size:22px;font-weight:700;color:#f1f5f9;}
+.ms{font-size:11px;color:#475569;margin-top:2px;}
+.stl{font-size:12px;font-weight:700;color:#475569;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;}
+.dgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px;}
+.dc{border:1px solid #334155;border-radius:8px;padding:10px 6px;text-align:center;background:#0f172a;position:relative;}
+.dc.hot{border-color:#ef4444;background:#1a0a0a;}
+.dc.cold{border-color:#3b82f6;background:#0a1628;}
+.dn{font-size:20px;font-weight:700;color:#f1f5f9;}
+.dc.hot .dn{color:#f87171;}.dc.cold .dn{color:#60a5fa;}
+.dct{font-size:11px;color:#64748b;margin-top:2px;}
+.dbw{height:4px;background:#1e293b;border-radius:2px;margin-top:6px;}
+.db{height:4px;border-radius:2px;background:#3b82f6;transition:width 0.4s;}
+.dc.hot .db{background:#ef4444;}.dc.cold .db{background:#3b82f6;}
+.bdg{font-size:9px;padding:1px 5px;border-radius:99px;position:absolute;top:3px;right:3px;font-weight:700;}
+.bh{background:#450a0a;color:#f87171;}.bc{background:#0c1a3a;color:#60a5fa;}
+.tf{border:1px solid #334155;border-radius:10px;padding:12px;background:#0f172a;margin-bottom:14px;}
+.tr{display:flex;gap:5px;flex-wrap:wrap;}
+.tb{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.te{background:#052e16;color:#4ade80;}.to{background:#1c1917;color:#fbbf24;}
+.tl{border:2px solid #3b82f6;}
+.eo2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.eoc{border:1px solid #334155;border-radius:10px;padding:14px;background:#0f172a;}
+.eol{font-size:13px;color:#64748b;margin-bottom:6px;}
+.eov{font-size:28px;font-weight:700;color:#f1f5f9;}
+.eobw{height:6px;background:#1e293b;border-radius:3px;margin-top:8px;}
+.eob{height:6px;border-radius:3px;transition:width 0.5s;}
+.sb{border:1px solid #334155;border-radius:10px;padding:14px;margin-bottom:14px;background:#0f172a;}
+.sr{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b;}
+.sr:last-child{border-bottom:none;}
+.sl{font-size:13px;color:#94a3b8;}
+.pl{font-size:11px;padding:3px 10px;border-radius:99px;font-weight:600;}
+.pe{background:#052e16;color:#4ade80;}.po{background:#1c1917;color:#fbbf24;}
+.pm{background:#052e16;color:#4ade80;}.pd{background:#1a0a0a;color:#f87171;}
+.pn{background:#1e293b;color:#64748b;}
+.ai-panel{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #1e40af;}
+.ai-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.ai-icon{width:38px;height:38px;border-radius:50%;background:rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ai-title{font-size:16px;font-weight:700;color:#f1f5f9;}
+.ai-subtitle{font-size:11px;color:#93c5fd;margin-top:1px;}
+.auto-btn{font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#93c5fd;margin-left:auto;}
+.auto-btn.on{background:#16a34a;border-color:#16a34a;color:#fff;}
+.chat-history{max-height:220px;overflow-y:auto;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;}
+.chat-bubble{padding:9px 13px;border-radius:10px;font-size:13px;line-height:1.55;max-width:92%;white-space:pre-wrap;}
+.chat-ai{background:rgba(255,255,255,0.07);align-self:flex-start;border:1px solid rgba(255,255,255,0.1);color:#e2e8f0;}
+.chat-user{background:rgba(59,130,246,0.2);align-self:flex-end;border:1px solid rgba(59,130,246,0.3);color:#bfdbfe;}
+.chat-warn{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);align-self:flex-start;color:#fca5a5;}
+.chat-good{background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);align-self:flex-start;color:#86efac;}
+.ai-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.ap{font-size:12px;padding:5px 13px;border-radius:99px;font-weight:700;}
+.ap-green{background:#166534;color:#4ade80;}
+.ap-red{background:#991b1b;color:#fca5a5;}
+.ap-yellow{background:#92400e;color:#fcd34d;}
+.ap-blue{background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.3);}
+.ap-gray{background:rgba(255,255,255,0.07);color:#64748b;}
+.risk-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.risk-label{font-size:12px;color:#93c5fd;white-space:nowrap;}
+.risk-wrap{flex:1;height:7px;background:rgba(255,255,255,0.1);border-radius:4px;}
+.risk-bar{height:7px;border-radius:4px;transition:width 0.6s,background 0.6s;}
+.risk-pct{font-size:12px;color:#93c5fd;white-space:nowrap;}
+.ai-ask{display:flex;gap:8px;}
+.ai-input{flex:1;padding:9px 13px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);color:#f1f5f9;font-size:13px;outline:none;}
+.ai-input::placeholder{color:rgba(255,255,255,0.3);}
+.ai-send{padding:9px 16px;border-radius:8px;border:none;background:#3b82f6;color:#fff;font-size:13px;font-weight:700;}
+.analyze-btn{width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#93c5fd;font-size:13px;font-weight:600;margin-top:10px;}
+</style>
+</head>
+<body>
+<div id="tokenScreen">
+  <div class="tbox">
+    <div class="tlogo">🎯 Matches Vision AI</div>
+    <div class="tsub">Connect your Deriv demo account securely</div>
+    <div class="tsteps">
+      <p>
+        <b style="color:#e2e8f0;">How to get your API token:</b><br>
+        1. Go to <a href="https://api.deriv.com" target="_blank">api.deriv.com</a><br>
+        2. Click <b style="color:#e2e8f0;">API Tokens</b> in left menu<br>
+        3. Create token · Scope: <b style="color:#e2e8f0;">Trade</b><br>
+        4. Click <b style="color:#e2e8f0;">Create</b> and copy the token
+      </p>
+    </div>
+    <div class="tlabel">🔑 Paste your API token:</div>
+    <input class="tinput" id="tokenInput" type="password" placeholder="pat_xxxxxxxxxxxxxxxx…"/>
+    <div class="thint">🔒 Token stays in your browser only — never shared anywhere.</div>
+    <button class="tbtn" onclick="connectWithToken()">Connect Demo Account</button>
+    <button class="tskip" onclick="skipToken()">Skip — use public ticks (no account)</button>
+    <div class="terr" id="tokenErr"></div>
+  </div>
+</div>
+<div id="app" style="display:none;">
+  <div class="card">
+    <div class="hdr">
+      <div>
+        <div class="ttl"><span class="dot" id="dot"></span>Matches Vision AI</div>
+        <div class="sub" id="lbl">Connecting…</div>
+      </div>
+      <button class="rbtn" onclick="reconnect()">↻ Reconnect</button>
+    </div>
+    <div id="acctBar" style="display:none;" class="acct-bar">
+      <div>Demo: <span id="acctId">—</span> &nbsp;·&nbsp; Balance: <span id="acctBal">—</span></div>
+      <button class="logout-btn" onclick="logoutToken()">Change token</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="irow">
+      <span class="ilab">Index:</span>
+      <button class="ibtn on" onclick="sw(this,'R_10')">V10</button>
+      <button class="ibtn" onclick="sw(this,'R_25')">V25</button>
+      <button class="ibtn" onclick="sw(this,'R_50')">V50</button>
+      <button class="ibtn" onclick="sw(this,'R_75')">V75</button>
+      <button class="ibtn" onclick="sw(this,'R_100')">V100</button>
+    </div>
+  </div>
+  <div class="ai-panel">
+    <div class="ai-header">
+      <div class="ai-icon">🧠</div>
+      <div>
+        <div class="ai-title">AI Trade Analyst</div>
+        <div class="ai-subtitle">Smart built-in analysis · Updates every 20 ticks</div>
+      </div>
+      <button class="auto-btn" id="autoBtn" onclick="toggleAuto()">Auto: OFF</button>
+    </div>
+    <div class="chat-history" id="chatHistory"></div>
+    <div class="ai-pills" id="aiPills"><span class="ap ap-gray">Waiting for ticks…</span></div>
+    <div class="risk-row">
+      <span class="risk-label">Risk level:</span>
+      <div class="risk-wrap"><div class="risk-bar" id="riskBar" style="width:0%;background:#22c55e;"></div></div>
+      <span class="risk-pct" id="riskPct">—</span>
+    </div>
+    <div class="ai-ask">
+      <input class="ai-input" id="aiInput" placeholder="Ask e.g. should I trade Even now?" onkeydown="if(event.key==='Enter')askAI()"/>
+      <button class="ai-send" onclick="askAI()">Ask</button>
+    </div>
+    <button class="analyze-btn" onclick="analyzeNow()">🔍 Analyze Now</button>
+  </div>
+  <div class="card" style="padding:10px 16px;">
+    <div class="tabs">
+      <button class="tab on" onclick="stab(this,'d')">Digit frequency</button>
+      <button class="tab" onclick="stab(this,'e')">Even / Odd</button>
+      <button class="tab" onclick="stab(this,'s')">Signals</button>
+    </div>
+  </div>
+  <div id="pnl-d" class="pnl on">
+    <div class="mrow">
+      <div class="mc"><div class="ml">Total ticks</div><div class="mv" id="mt">0</div></div>
+      <div class="mc"><div class="ml">Hot digit</div><div class="mv" id="mh">—</div><div class="ms">most frequent</div></div>
+      <div class="mc"><div class="ml">Cold digit</div><div class="mv" id="mc2">—</div><div class="ms">least frequent</div></div>
+      <div class="mc"><div class="ml">Last digit</div><div class="mv" id="ml2">—</div></div>
+    </div>
+    <div class="stl">Digit distribution (0–9)</div>
+    <div class="dgrid" id="dg"></div>
+    <div class="stl">Last 30 ticks</div>
+    <div class="tf"><div class="tr" id="tr1"></div></div>
+  </div>
+  <div id="pnl-e" class="pnl">
+    <div class="eo2">
+      <div class="eoc">
+        <div class="eol">Even (0,2,4,6,8)</div>
+        <div class="eov" id="ep">—</div>
+        <div style="font-size:12px;color:#64748b;margin-top:2px;" id="ec">0 ticks</div>
+        <div class="eobw"><div class="eob" id="eb" style="width:50%;background:#22c55e;"></div></div>
+      </div>
+      <div class="eoc">
+        <div class="eol">Odd (1,3,5,7,9)</div>
+        <div class="eov" id="opp">—</div>
+        <div style="font-size:12px;color:#64748b;margin-top:2px;" id="oc">0 ticks</div>
+        <div class="eobw"><div class="eob" id="ob" style="width:50%;background:#f59e0b;"></div></div>
+      </div>
+    </div>
+    <div class="stl">Streak & suggestion</div>
+    <div class="sb">
+      <div class="sr"><span class="sl">Current streak</span><span class="pl pn" id="estr">—</span></div>
+      <div class="sr"><span class="sl">Longest Even streak</span><span class="pl pe" id="eme">0</span></div>
+      <div class="sr"><span class="sl">Longest Odd streak</span><span class="pl po" id="emo">0</span></div>
+      <div class="sr"><span class="sl">Suggestion</span><span class="pl pn" id="esug">Waiting…</span></div>
+    </div>
+    <div class="stl">Last 30 ticks</div>
+    <div class="tf"><div class="tr" id="tr2"></div></div>
+  </div>
+  <div id="pnl-s" class="pnl">
+    <div class="stl">Matches / Differs signals</div>
+    <div class="sb" id="smatch"></div>
+    <div class="stl">Over / Under signals</div>
+    <div class="sb" id="sou"></div>
+  </div>
+</div>
+<script>
+const SYM={R_10:'V10',R_25:'V25',R_50:'V50',R_75:'V75',R_100:'V100'};
+let cur='R_10',ws,sid,apiToken=null,autoAnalyze=false,ticksSinceAI=0;
+const S={};
+Object.keys(SYM).forEach(k=>S[k]={counts:new Array(10).fill(0),ticks:[],ec:0,oc:0,me:0,mo:0,cs:0,ct:null});
+function connectWithToken(){const t=document.getElementById('tokenInput').value.trim();if(!t){document.getElementById('tokenErr').textContent='Please enter your token.';return;}apiToken=t;document.getElementById('tokenScreen').style.display='none';document.getElementById('app').style.display='block';connect();}
+function skipToken(){apiToken=null;document.getElementById('tokenScreen').style.display='none';document.getElementById('app').style.display='block';connect();}
+function logoutToken(){if(ws)ws.close();apiToken=null;document.getElementById('tokenScreen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('tokenInput').value='';document.getElementById('tokenErr').textContent='';}
+function setStatus(t,txt){document.getElementById('dot').className='dot '+(t==='live'?'live':t==='err'?'err':'');document.getElementById('lbl').textContent=txt;}
+function connect(){
+  setStatus('','Connecting to Deriv…');
+  ws=new WebSocket('wss://ws.derivws.com/websockets/v3?app_id=1089');
+  ws.onopen=()=>{if(apiToken){ws.send(JSON.stringify({authorize:apiToken}));}else{setStatus('live','Connected · public ticks');sub(cur);}};
+  ws.onmessage=e=>{
+    const m=JSON.parse(e.data);
+    if(m.msg_type==='authorize'){
+      if(m.error){setStatus('err','Token error: '+m.error.message);document.getElementById('tokenScreen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('tokenErr').textContent='❌ '+m.error.message;return;}
+      const a=m.authorize;setStatus('live','Connected · '+a.loginid+' · Demo');document.getElementById('acctBar').style.display='flex';document.getElementById('acctId').textContent=a.loginid;document.getElementById('acctBal').textContent=(a.currency||'USD')+' '+parseFloat(a.balance||0).toFixed(2);sub(cur);
+    }
+    if(m.msg_type==='tick'&&m.tick){const sym=m.tick.symbol,q=m.tick.quote.toString(),d=parseInt(q[q.length-1]),s=S[sym];s.counts[d]++;s.ticks.push(d);if(s.ticks.length>60)s.ticks.shift();const ie=d%2===0;if(ie)s.ec++;else s.oc++;if(s.ct===null){s.ct=ie;s.cs=1;}else if(s.ct===ie)s.cs++;else{s.ct=ie;s.cs=1;}if(ie&&s.cs>s.me)s.me=s.cs;if(!ie&&s.cs>s.mo)s.mo=s.cs;if(sym===cur){render();ticksSinceAI++;if(autoAnalyze&&ticksSinceAI>=20){ticksSinceAI=0;analyzeNow();}}}
+    if(m.subscription)sid=m.subscription.id;
+  };
+  ws.onerror=()=>setStatus('err','Error · click Reconnect');
+  ws.onclose=()=>setStatus('err','Disconnected · click Reconnect');
+}
+function sub(sym){if(ws&&ws.readyState===1){if(sid){ws.send(JSON.stringify({forget:sid}));sid=null;}ws.send(JSON.stringify({ticks:sym,subscribe:1}));setStatus('live','Live · '+SYM[sym]+(apiToken?' · Demo':' · public'));}}
+function reconnect(){if(ws)ws.close();setTimeout(connect,300);}
+function sw(btn,sym){document.querySelectorAll('.ibtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');cur=sym;sub(sym);render();}
+function stab(btn,tab){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));document.getElementById('pnl-'+tab).classList.add('on');}
+function toggleAuto(){autoAnalyze=!autoAnalyze;const btn=document.getElementById('autoBtn');btn.textContent='Auto: '+(autoAnalyze?'ON':'OFF');btn.className='auto-btn'+(autoAnalyze?' on':'');addChat('ai',autoAnalyze?'✅ Auto-analysis ON — I will analyze every 20 ticks.':'⏸ Auto-analysis turned off.');}
+function getAnalysis(){const s=S[cur],total=s.ticks.length;if(total<10)return null;const t30=s.ticks.slice(-30);const etot=s.ec+s.oc;const epct=etot>0?Math.round((s.ec/etot)*100):50;const opct=100-epct;const hi=s.counts.indexOf(Math.max(...s.counts));const lo=s.counts.indexOf(Math.min(...s.counts));const hiPct=Math.round((s.counts[hi]/total)*100);const loPct=Math.round((s.counts[lo]/total)*100);const streak=s.cs,streakType=s.ct?'Even':'Odd';let suggestions=[],warnings=[],risk=45,bestTrade='',reason='';if(s.cs>=6){const opp=s.ct?'Odd':'Even';suggestions.push({type:opp,confidence:'High',reason:`${streak}-tick ${streakType} streak — reversal likely`});risk=30;bestTrade=opp;reason=`There's been a ${streak}-tick streak of ${streakType} digits. A reversal to ${opp} is more likely now. Confidence: HIGH.`;}else if(s.cs>=4){const opp=s.ct?'Odd':'Even';suggestions.push({type:opp,confidence:'Medium',reason:`${streak}-tick ${streakType} streak forming`});risk=40;bestTrade=opp;reason=`A ${streak}-tick ${streakType} streak is forming. Consider ${opp} on next trade. Confidence: MEDIUM.`;}else if(epct>62){suggestions.push({type:'Odd',confidence:'Medium',reason:`Even dominating at ${epct}%`});risk=42;bestTrade='Odd';reason=`Even digits at ${epct}% — above normal. Odd may be due. Confidence: MEDIUM.`;}else if(opct>62){suggestions.push({type:'Even',confidence:'Medium',reason:`Odd dominating at ${opct}%`});risk=42;bestTrade='Even';reason=`Odd digits at ${opct}% — above normal. Even may be due. Confidence: MEDIUM.`;}else{warnings.push('Even/Odd balanced — avoid trades now');risk=65;reason=`Even/Odd balanced (${epct}% Even, ${opct}% Odd). High risk — wait for clearer pattern.`;}if(loPct<=4&&total>=20){suggestions.push({type:`Matches ${lo}`,confidence:'Medium',reason:`Digit ${lo} very cold at ${loPct}%`});if(risk>35)risk=38;}if(hiPct>=18&&total>=20){suggestions.push({type:`Differs ${hi}`,confidence:'High',reason:`Digit ${hi} very hot at ${hiPct}%`});if(risk>30)risk=28;}const over4=t30.filter(t=>t>4).length,pOver=Math.round((over4/t30.length)*100);if(pOver>65){suggestions.push({type:'Over 4',confidence:'Medium',reason:`${pOver}% of last 30 ticks over 4`});if(risk>38)risk=38;}if(pOver<35){suggestions.push({type:'Under 5',confidence:'Medium',reason:`${100-pOver}% under 5`});if(risk>38)risk=38;}if(total<20){risk=Math.max(risk,65);warnings.push('Only '+total+' ticks — need more data');}if(s.cs>=8){risk=20;warnings=[];reason=`🔥 STRONG SIGNAL: ${streak}-tick ${streakType} streak! Trade ${s.ct?'Odd':'Even'} now. Risk: LOW.`;}return{suggestions,warnings,risk,bestTrade,reason,total,epct,opct,streak,streakType,hiDigit:hi,hiPct,loDigit:lo,loPct};}
+function analyzeNow(){const a=getAnalysis();if(!a){addChat('ai','⏳ Need at least 10 ticks. Please wait…');return;}let msg=`📊 Analysis for ${SYM[cur]} (${a.total} ticks)\n\n${a.reason}`;if(a.warnings.length)msg+='\n\n⚠️ '+a.warnings.join(' | ');msg+=`\n\nRisk: ${a.risk<=30?'🟢 LOW':a.risk<=55?'🟡 MODERATE':'🔴 HIGH'} (${a.risk}%)`;addChatClass(a.risk<=30?'chat-good':a.risk>=65?'chat-warn':'chat-ai',msg);updatePills(a);updateRisk(a.risk);}
+function askAI(){const input=document.getElementById('aiInput');const q=input.value.trim();if(!q)return;input.value='';addChat('user',q);const a=getAnalysis();if(!a){addChat('ai','⏳ Need at least 10 ticks. Please wait.');return;}const ql=q.toLowerCase();let reply='';if(ql.includes('even')||ql.includes('odd')){reply=`Even/Odd for ${SYM[cur]}: Even ${a.epct}%, Odd ${a.opct}%. Streak: ${a.streak} ${a.streakType}. ${a.streak>=4?`Consider ${a.streakType==='Even'?'Odd':'Even'} — reversal signal.`:'No strong streak yet — wait for 4+.'} Risk: ${a.risk}%.`;}else if(ql.includes('match')){reply=`Best Matches: digit ${a.loDigit} (coldest at ${a.loPct}%). ⚠️ Matches pays high but ~10% win rate. Risk: HIGH.`;}else if(ql.includes('differ')){reply=`Best Differs: digit ${a.hiDigit} (hottest at ${a.hiPct}%). Use Differs ${a.hiDigit}. Risk: ${a.risk<=40?'LOW-MEDIUM':'MODERATE'}.`;}else if(ql.includes('over')||ql.includes('under')){const t30=S[cur].ticks.slice(-30),ov=Math.round((t30.filter(t=>t>4).length/t30.length)*100);reply=`Over 4: ${ov}% of last 30. Under 5: ${100-ov}%. ${ov>60?'Over 4 trending.':ov<40?'Under 5 trending.':'Balanced — no clear signal.'} Risk: ${a.risk}%.`;}else if(ql.includes('best')||ql.includes('should')||ql.includes('trade')||ql.includes('now')){reply=a.reason+`\n\nBest trade: ${a.bestTrade||'Wait for clearer signal'}. Risk: ${a.risk<=30?'🟢 LOW':a.risk<=55?'🟡 MODERATE':'🔴 HIGH'} (${a.risk}%).`;}else if(ql.includes('risk')){reply=`Risk for ${SYM[cur]}: ${a.risk}% (${a.risk<=30?'LOW 🟢':a.risk<=55?'MODERATE 🟡':'HIGH 🔴'}). ${a.warnings.length?'⚠️ '+a.warnings[0]:'Patterns look tradeable.'}`;}else if(ql.includes('streak')){reply=`Streak: ${a.streak} ${a.streakType}. ${a.streak>=6?`Strong — trade ${a.streakType==='Even'?'Odd':'Even'} now.`:a.streak>=4?`Moderate — consider ${a.streakType==='Even'?'Odd':'Even'}.`:'Too short — wait for 4+.'}`;}else if(ql.includes('hi')||ql.includes('hello')){reply=`Hi! 👋 I'm your AI analyst for ${SYM[cur]}. ${a.total} ticks analyzed. Ask about Even/Odd, Matches, Differs, Over/Under, or "best trade now"!`;}else{reply=`${SYM[cur]} (${a.total} ticks): ${a.reason} Best: ${a.bestTrade||'Wait'}. Risk: ${a.risk}%.`;}addChat('ai',reply);updatePills(a);updateRisk(a.risk);}
+function addChat(role,msg){addChatClass(role==='user'?'chat-user':'chat-ai',msg);}
+function addChatClass(cls,msg){const h=document.getElementById('chatHistory');const d=document.createElement('div');d.className='chat-bubble '+cls;d.textContent=msg;h.appendChild(d);h.scrollTop=h.scrollHeight;}
+function updatePills(a){const p=document.getElementById('aiPills');if(!a||!a.suggestions.length){p.innerHTML='<span class="ap ap-gray">Waiting for signal…</span>';return;}p.innerHTML=a.suggestions.map(s=>{const t=s.type.toLowerCase();const cls=t.includes('even')||t.includes('matches')||t.includes('over')?'ap-green':t.includes('odd')||t.includes('differs')||t.includes('under')?'ap-yellow':'ap-blue';return`<span class="ap ${cls}">▶ ${s.type} <span style="font-size:10px;opacity:0.8;">(${s.confidence})</span></span>`;}).join('')+(a.warnings.length?'<span class="ap ap-red">⚠ '+a.warnings[0]+'</span>':'');}
+function updateRisk(risk){const rb=document.getElementById('riskBar'),rp=document.getElementById('riskPct');rb.style.width=risk+'%';rb.style.background=risk>=65?'#ef4444':risk>=45?'#f59e0b':'#22c55e';rp.textContent=risk+'% '+(risk>=65?'HIGH':risk>=45?'MOD':'LOW');}
+function render(){const s=S[cur],total=s.ticks.length,mx=Math.max(...s.counts,1);const hi=s.counts.indexOf(Math.max(...s.counts)),lo=s.counts.indexOf(Math.min(...s.counts));const last=total>0?s.ticks[s.ticks.length-1]:null;document.getElementById('mt').textContent=total;document.getElementById('mh').textContent=total>0?hi:'—';document.getElementById('mc2').textContent=total>0?lo:'—';document.getElementById('ml2').textContent=last!==null?last:'—';const dg=document.getElementById('dg');dg.innerHTML='';for(let i=0;i<10;i++){const cnt=s.counts[i],pct=total>0?Math.round((cnt/total)*100):0,bw=total>0?Math.round((cnt/mx)*100):0;const ih=i===hi&&total>5,ic=i===lo&&total>5&&!ih;dg.innerHTML+=`<div class="dc ${ih?'hot':''} ${ic?'cold':''}"><div class="dn">${i}</div><div class="dct">${cnt}·${pct}%</div><div class="dbw"><div class="db" style="width:${bw}%"></div></div></div>`;}const t30=s.ticks.slice(-30);['tr1','tr2'].forEach(id=>document.getElementById(id).innerHTML=t30.map((t,i)=>`<div class="tb ${t%2===0?'te':'to'} ${i===t30.length-1?'tl':''}">${t}</div>`).join(''));const etot=s.ec+s.oc,epct=etot>0?Math.round((s.ec/etot)*100):50,opct=100-epct;document.getElementById('ep').textContent=etot>0?epct+'%':'—';document.getElementById('opp').textContent=etot>0?opct+'%':'—';document.getElementById('ec').textContent=s.ec+' ticks';document.getElementById('oc').textContent=s.oc+' ticks';document.getElementById('eb').style.width=epct+'%';document.getElementById('ob').style.width=opct+'%';document.getElementById('eme').textContent=s.me;document.getElementById('emo').textContent=s.mo;const estr=document.getElementById('estr');estr.textContent=s.ct===null?'—':(s.cs+' '+(s.ct?'Even':'Odd'));estr.className='pl '+(s.ct?'pe':'po');const sg=document.getElementById('esug');if(etot<5){sg.textContent='Waiting…';sg.className='pl pn';}else if(s.cs>=5){sg.textContent=(s.ct?'Consider Odd':'Consider Even')+' next';sg.className='pl '+(s.ct?'po':'pe');}else if(epct>60){sg.textContent='Odd trending';sg.className='pl po';}else if(opct>60){sg.textContent='Even trending';sg.className='pl pe';}else{sg.textContent='Balanced · wait';sg.className='pl pn';}let mh='';for(let i=0;i<10;i++){const cnt=s.counts[i],pct=total>0?Math.round((cnt/total)*100):0;let cl,lb;if(total<10){cl='pn';lb='Waiting…';}else if(pct>=15){cl='pd';lb='Differs '+i;}else if(pct<=5){cl='pm';lb='Matches '+i;}else{cl='pn';lb='Neutral';}mh+=`<div class="sr"><span class="sl">Digit ${i} · ${pct}%</span><span class="pl ${cl}">${lb}</span></div>`;}document.getElementById('smatch').innerHTML=mh;let oh='';[5,4,3,2].forEach(th=>{const cnt=s.ticks.filter(t=>t>th).length,pct=total>0?Math.round((cnt/total)*100):0,cl=pct>55?'pm':pct<45?'pd':'pn';oh+=`<div class="sr"><span class="sl">Over ${th}</span><span class="pl ${cl}">${pct}%</span></div>`;});[4,5,6,7].forEach(th=>{const cnt=s.ticks.filter(t=>t<th).length,pct=total>0?Math.round((cnt/total)*100):0,cl=pct>55?'pm':pct<45?'pd':'pn';oh+=`<div class="sr"><span class="sl">Under ${th}</span><span class="pl ${cl}">${pct}%</span></div>`;});document.getElementById('sou').innerHTML=oh;}
+setTimeout(()=>addChat('ai','👋 Hi! I\'m your built-in AI analyst. Once 10+ ticks load, click "Analyze Now" or ask me anything like "best trade now", "should I trade Even?", or "risk level".'),600);
+render();
+</script>
+</body>
+</html>
