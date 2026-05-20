@@ -3,29 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matches Vision AI · Auto Trader</title>
+<title>Matches Vision AI</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:system-ui,sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh;}
 button{cursor:pointer;font-family:inherit;}
 input{font-family:inherit;}
-#tokenScreen{position:fixed;inset:0;background:linear-gradient(135deg,#0f172a,#1e3a8a);display:flex;align-items:center;justify-content:center;padding:20px;z-index:999;overflow-y:auto;}
-.tbox{background:#1e293b;border-radius:16px;padding:28px 24px;max-width:440px;width:100%;border:1px solid #334155;}
-.tlogo{font-size:22px;font-weight:800;color:#60a5fa;margin-bottom:4px;}
-.tsub{font-size:13px;color:#94a3b8;margin-bottom:18px;}
-.tsteps{background:#0f172a;border-radius:10px;padding:14px;margin-bottom:16px;border:1px solid #334155;}
-.tsteps p{font-size:12px;color:#94a3b8;line-height:2;}
-.tsteps a{color:#60a5fa;}
-.warn-box{background:#1a0a0a;border:1px solid #7f1d1d;border-radius:10px;padding:12px;margin-bottom:16px;}
-.warn-box p{font-size:12px;color:#fca5a5;line-height:1.8;}
-.tlabel{font-size:13px;font-weight:600;color:#e2e8f0;margin-bottom:6px;}
-.tinput{width:100%;padding:10px 14px;border-radius:8px;border:1.5px solid #334155;background:#0f172a;color:#f1f5f9;font-size:14px;outline:none;margin-bottom:6px;}
-.tinput:focus{border-color:#3b82f6;}
-.thint{font-size:11px;color:#64748b;margin-bottom:14px;}
-.tbtn{width:100%;padding:11px;border-radius:8px;border:none;background:#3b82f6;color:#fff;font-size:15px;font-weight:700;margin-bottom:8px;}
-.tbtn:hover{background:#2563eb;}
-.tskip{width:100%;padding:9px;border-radius:8px;border:1px solid #334155;background:transparent;color:#94a3b8;font-size:13px;}
-.terr{font-size:11px;color:#f87171;margin-top:8px;text-align:center;min-height:16px;}
 #app{max-width:800px;margin:0 auto;padding:12px;}
 .card{background:#1e293b;border-radius:12px;padding:14px 16px;margin-bottom:12px;border:1px solid #334155;}
 .hdr{display:flex;align-items:center;justify-content:space-between;}
@@ -36,63 +19,10 @@ input{font-family:inherit;}
 .dot.err{background:#ef4444;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 .rbtn{font-size:12px;padding:6px 12px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#94a3b8;}
-.acct-bar{background:#052e16;border:1px solid #166534;border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;margin-top:10px;font-size:13px;color:#4ade80;}
-.logout-btn{font-size:11px;padding:3px 8px;border-radius:6px;border:1px solid #22c55e;background:transparent;color:#22c55e;}
 .irow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
 .ilab{font-size:12px;color:#64748b;}
 .ibtn{font-size:12px;padding:5px 13px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#94a3b8;}
 .ibtn.on{background:#3b82f6;border-color:#3b82f6;color:#fff;}
-
-/* AUTO TRADER PANEL */
-.at-panel{background:#0f172a;border-radius:14px;padding:16px;margin-bottom:12px;border:2px solid #334155;}
-.at-panel.running{border-color:#22c55e;box-shadow:0 0 20px rgba(34,197,94,0.15);}
-.at-panel.stopped{border-color:#ef4444;}
-.at-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.at-icon{width:40px;height:40px;border-radius:50%;background:#1e293b;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.at-title{font-size:16px;font-weight:700;color:#f1f5f9;}
-.at-subtitle{font-size:11px;color:#64748b;margin-top:1px;}
-.at-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
-.at-stat{background:#1e293b;border-radius:8px;padding:10px;text-align:center;border:1px solid #334155;}
-.at-stat-label{font-size:10px;color:#64748b;margin-bottom:4px;text-transform:uppercase;}
-.at-stat-val{font-size:20px;font-weight:700;color:#f1f5f9;}
-.at-stat-val.green{color:#22c55e;}
-.at-stat-val.red{color:#ef4444;}
-.at-stat-val.yellow{color:#f59e0b;}
-.at-controls{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
-.at-start{flex:1;padding:12px;border-radius:10px;border:none;background:#22c55e;color:#fff;font-size:14px;font-weight:700;min-width:120px;}
-.at-start:hover{background:#16a34a;}
-.at-stop{flex:1;padding:12px;border-radius:10px;border:none;background:#ef4444;color:#fff;font-size:14px;font-weight:700;min-width:120px;}
-.at-stop:hover{background:#dc2626;}
-.at-stop:disabled{background:#334155;color:#64748b;cursor:not-allowed;}
-.at-settings{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
-.at-set{background:#1e293b;border-radius:8px;padding:10px;border:1px solid #334155;}
-.at-set-label{font-size:11px;color:#64748b;margin-bottom:6px;}
-.at-set-val{font-size:13px;color:#f1f5f9;font-weight:500;}
-.at-input{width:100%;padding:6px 10px;border-radius:6px;border:1px solid #334155;background:#0f172a;color:#f1f5f9;font-size:13px;outline:none;}
-.at-select{width:100%;padding:6px 10px;border-radius:6px;border:1px solid #334155;background:#0f172a;color:#f1f5f9;font-size:13px;outline:none;}
-.trade-log{max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;}
-.trade-entry{padding:8px 12px;border-radius:8px;font-size:12px;display:flex;align-items:center;justify-content:space-between;border:1px solid #334155;}
-.trade-entry.win{background:#052e16;border-color:#166534;color:#4ade80;}
-.trade-entry.loss{background:#1a0a0a;border-color:#7f1d1d;color:#f87171;}
-.trade-entry.pending{background:#1e293b;border-color:#334155;color:#94a3b8;}
-.trade-entry.info{background:#0c1a3a;border-color:#1e40af;color:#93c5fd;}
-.signal-box{background:#1e293b;border-radius:10px;padding:12px;margin-bottom:14px;border:1px solid #334155;}
-.signal-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid #0f172a;}
-.signal-row:last-child{border-bottom:none;}
-.signal-label{font-size:13px;color:#94a3b8;}
-.signal-val{font-size:12px;padding:3px 10px;border-radius:99px;font-weight:600;}
-.sv-green{background:#052e16;color:#4ade80;}
-.sv-red{background:#1a0a0a;color:#f87171;}
-.sv-yellow{background:#1c1917;color:#fbbf24;}
-.sv-blue{background:#0c1a3a;color:#93c5fd;}
-.sv-gray{background:#1e293b;color:#64748b;}
-.status-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:700;}
-.sb-idle{background:#1e293b;color:#64748b;border:1px solid #334155;}
-.sb-running{background:#052e16;color:#4ade80;border:1px solid #166534;}
-.sb-stopped{background:#1a0a0a;color:#f87171;border:1px solid #7f1d1d;}
-.sb-waiting{background:#1c1917;color:#fbbf24;border:1px solid #92400e;}
-
-/* TABS */
 .tabs{display:flex;gap:4px;flex-wrap:wrap;}
 .tab{font-size:13px;padding:6px 14px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#94a3b8;}
 .tab.on{background:#3b82f6;color:#fff;font-weight:500;border-color:#3b82f6;}
@@ -113,6 +43,8 @@ input{font-family:inherit;}
 .dbw{height:4px;background:#1e293b;border-radius:2px;margin-top:6px;}
 .db{height:4px;border-radius:2px;background:#3b82f6;transition:width 0.4s;}
 .dc.hot .db{background:#ef4444;}.dc.cold .db{background:#3b82f6;}
+.bdg{font-size:9px;padding:1px 5px;border-radius:99px;position:absolute;top:3px;right:3px;font-weight:700;}
+.bh{background:#450a0a;color:#f87171;}.bc{background:#0c1a3a;color:#60a5fa;}
 .tf{border:1px solid #334155;border-radius:10px;padding:12px;background:#0f172a;margin-bottom:14px;}
 .tr{display:flex;gap:5px;flex-wrap:wrap;}
 .tb{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
@@ -124,7 +56,7 @@ input{font-family:inherit;}
 .eov{font-size:28px;font-weight:700;color:#f1f5f9;}
 .eobw{height:6px;background:#1e293b;border-radius:3px;margin-top:8px;}
 .eob{height:6px;border-radius:3px;transition:width 0.5s;}
-.sb2{border:1px solid #334155;border-radius:10px;padding:14px;margin-bottom:14px;background:#0f172a;}
+.sb{border:1px solid #334155;border-radius:10px;padding:14px;margin-bottom:14px;background:#0f172a;}
 .sr{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b;}
 .sr:last-child{border-bottom:none;}
 .sl{font-size:13px;color:#94a3b8;}
@@ -132,61 +64,63 @@ input{font-family:inherit;}
 .pe{background:#052e16;color:#4ade80;}.po{background:#1c1917;color:#fbbf24;}
 .pm{background:#052e16;color:#4ade80;}.pd{background:#1a0a0a;color:#f87171;}
 .pn{background:#1e293b;color:#64748b;}
+.ai-panel{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #1e40af;}
+.ai-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.ai-icon{width:38px;height:38px;border-radius:50%;background:rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ai-title{font-size:16px;font-weight:700;color:#f1f5f9;}
+.ai-subtitle{font-size:11px;color:#93c5fd;margin-top:1px;}
+.auto-btn{font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#93c5fd;margin-left:auto;}
+.auto-btn.on{background:#16a34a;border-color:#16a34a;color:#fff;}
+.chat-history{max-height:220px;overflow-y:auto;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;}
+.chat-bubble{padding:9px 13px;border-radius:10px;font-size:13px;line-height:1.55;max-width:92%;white-space:pre-wrap;}
+.chat-ai{background:rgba(255,255,255,0.07);align-self:flex-start;border:1px solid rgba(255,255,255,0.1);color:#e2e8f0;}
+.chat-user{background:rgba(59,130,246,0.2);align-self:flex-end;border:1px solid rgba(59,130,246,0.3);color:#bfdbfe;}
+.chat-warn{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);align-self:flex-start;color:#fca5a5;}
+.chat-good{background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);align-self:flex-start;color:#86efac;}
+.ai-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.ap{font-size:12px;padding:5px 13px;border-radius:99px;font-weight:700;}
+.ap-green{background:#166534;color:#4ade80;}
+.ap-red{background:#991b1b;color:#fca5a5;}
+.ap-yellow{background:#92400e;color:#fcd34d;}
+.ap-blue{background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.3);}
+.ap-gray{background:rgba(255,255,255,0.07);color:#64748b;}
+.risk-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.risk-label{font-size:12px;color:#93c5fd;white-space:nowrap;}
+.risk-wrap{flex:1;height:7px;background:rgba(255,255,255,0.1);border-radius:4px;}
+.risk-bar{height:7px;border-radius:4px;transition:width 0.6s,background 0.6s;}
+.risk-pct{font-size:12px;color:#93c5fd;white-space:nowrap;}
+.ai-ask{display:flex;gap:8px;}
+.ai-input{flex:1;padding:9px 13px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);color:#f1f5f9;font-size:13px;outline:none;}
+.ai-input::placeholder{color:rgba(255,255,255,0.3);}
+.ai-send{padding:9px 16px;border-radius:8px;border:none;background:#3b82f6;color:#fff;font-size:13px;font-weight:700;}
+.analyze-btn{width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#93c5fd;font-size:13px;font-weight:600;margin-top:10px;}
+
+/* SIGNAL CARDS */
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.sig-card{border-radius:10px;padding:14px;border:1px solid #334155;background:#0f172a;}
+.sig-card.strong{border-color:#22c55e;background:#052e16;}
+.sig-card.medium{border-color:#f59e0b;background:#1c1400;}
+.sig-card.weak{border-color:#334155;background:#0f172a;}
+.sig-type{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;}
+.sig-val{font-size:18px;font-weight:700;color:#f1f5f9;margin-bottom:4px;}
+.sig-conf{font-size:11px;padding:2px 8px;border-radius:99px;display:inline-block;}
+.conf-high{background:#166534;color:#4ade80;}
+.conf-med{background:#92400e;color:#fcd34d;}
+.conf-low{background:#1e293b;color:#64748b;}
 </style>
 </head>
 <body>
-
-<!-- TOKEN SCREEN -->
-<div id="tokenScreen">
-  <div class="tbox">
-    <div class="tlogo">🤖 Matches Vision AI · Auto Trader</div>
-    <div class="tsub">Connect your Deriv DEMO account to enable auto trading</div>
-    <div class="warn-box">
-      <p>
-        ⚠️ <b style="color:#fca5a5;">IMPORTANT WARNINGS:</b><br>
-        • Use DEMO account only — never real money to start<br>
-        • Auto trading can lose your balance quickly<br>
-        • No strategy wins 100% of the time<br>
-        • You are responsible for all trades placed
-      </p>
-    </div>
-    <div class="tsteps">
-      <p>
-        <b style="color:#e2e8f0;">Get your API token:</b><br>
-        1. Go to <a href="https://api.deriv.com" target="_blank">api.deriv.com</a><br>
-        2. Click <b style="color:#e2e8f0;">API Tokens</b> → Create new token<br>
-        3. Check ALL scopes: <b style="color:#e2e8f0;">Trade + Account management</b><br>
-        4. Copy the token and paste below
-      </p>
-    </div>
-    <div class="tlabel">🔑 Paste your API token:</div>
-    <input class="tinput" id="tokenInput" type="password" placeholder="pat_xxxxxxxxxxxxxxxx…"/>
-    <div class="thint">🔒 Token stays in your browser only — never shared anywhere.</div>
-    <button class="tbtn" onclick="connectWithToken()">Connect Demo Account</button>
-    <button class="tskip" onclick="skipToken()">Skip — analysis only (no auto trade)</button>
-    <div class="terr" id="tokenErr"></div>
-  </div>
-</div>
-
-<!-- MAIN APP -->
-<div id="app" style="display:none;">
-
-  <!-- Header -->
+<div id="app">
   <div class="card">
     <div class="hdr">
       <div>
-        <div class="ttl"><span class="dot" id="dot"></span>Matches Vision AI <span style="font-size:12px;color:#60a5fa;font-weight:400;">Auto Trader</span></div>
+        <div class="ttl"><span class="dot live" id="dot"></span>Matches Vision AI</div>
         <div class="sub" id="lbl">Connecting…</div>
       </div>
       <button class="rbtn" onclick="reconnect()">↻ Reconnect</button>
     </div>
-    <div id="acctBar" style="display:none;" class="acct-bar">
-      <div>Demo: <span id="acctId">—</span> &nbsp;·&nbsp; Balance: <span id="acctBal">—</span></div>
-      <button class="logout-btn" onclick="logoutToken()">Change token</button>
-    </div>
   </div>
 
-  <!-- Index selector -->
   <div class="card">
     <div class="irow">
       <span class="ilab">Index:</span>
@@ -198,98 +132,42 @@ input{font-family:inherit;}
     </div>
   </div>
 
-  <!-- AUTO TRADER PANEL -->
-  <div class="at-panel" id="atPanel">
-    <div class="at-header">
-      <div class="at-icon">🤖</div>
-      <div style="flex:1;">
-        <div class="at-title">Auto Trader</div>
-        <div class="at-subtitle">Places trades automatically when strong signals appear</div>
-      </div>
-      <div class="status-badge sb-idle" id="atStatus">⏸ Idle</div>
-    </div>
-
-    <!-- Stats -->
-    <div class="at-stats">
-      <div class="at-stat">
-        <div class="at-stat-label">Trades</div>
-        <div class="at-stat-val" id="statTrades">0</div>
-      </div>
-      <div class="at-stat">
-        <div class="at-stat-label">Wins</div>
-        <div class="at-stat-val green" id="statWins">0</div>
-      </div>
-      <div class="at-stat">
-        <div class="at-stat-label">Losses</div>
-        <div class="at-stat-val red" id="statLosses">0</div>
-      </div>
-      <div class="at-stat">
-        <div class="at-stat-label">P&L</div>
-        <div class="at-stat-val" id="statPnl">$0.00</div>
-      </div>
-    </div>
-
-    <!-- Settings -->
-    <div class="at-settings">
-      <div class="at-set">
-        <div class="at-set-label">Stake per trade ($)</div>
-        <input class="at-input" id="stakeInput" type="number" value="0.35" min="0.35" step="0.01"/>
-      </div>
-      <div class="at-set">
-        <div class="at-set-label">Stop after consecutive losses</div>
-        <select class="at-select" id="stopLossSelect">
-          <option value="3">3 losses</option>
-          <option value="5" selected>5 losses</option>
-          <option value="10">10 losses</option>
-          <option value="999">Never</option>
-        </select>
-      </div>
-      <div class="at-set">
-        <div class="at-set-label">Trade type</div>
-        <select class="at-select" id="tradeTypeSelect">
-          <option value="auto" selected>Auto (best signal)</option>
-          <option value="even_odd">Even / Odd only</option>
-          <option value="matches_differs">Matches / Differs only</option>
-          <option value="over_under">Over / Under only</option>
-        </select>
-      </div>
-      <div class="at-set">
-        <div class="at-set-label">Min signal strength</div>
-        <select class="at-select" id="signalStrengthSelect">
-          <option value="medium">Medium+</option>
-          <option value="high" selected>High only</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Current signal -->
-    <div class="stl">Current signal</div>
-    <div class="signal-box">
-      <div class="signal-row"><span class="signal-label">Best trade</span><span class="signal-val sv-gray" id="sigBest">Waiting…</span></div>
-      <div class="signal-row"><span class="signal-label">Confidence</span><span class="signal-val sv-gray" id="sigConf">—</span></div>
-      <div class="signal-row"><span class="signal-label">Risk level</span><span class="signal-val sv-gray" id="sigRisk">—</span></div>
-      <div class="signal-row"><span class="signal-label">Streak</span><span class="signal-val sv-gray" id="sigStreak">—</span></div>
-      <div class="signal-row"><span class="signal-label">Consecutive losses</span><span class="signal-val sv-gray" id="sigConsecLoss">0</span></div>
-    </div>
-
-    <!-- Controls -->
-    <div class="at-controls">
-      <button class="at-start" id="startBtn" onclick="startAutoTrade()">▶ Start Auto Trade</button>
-      <button class="at-stop" id="stopBtn" onclick="stopAutoTrade()" disabled>⏹ Emergency Stop</button>
-    </div>
-
-    <!-- Trade log -->
-    <div class="stl">Trade log</div>
-    <div class="trade-log" id="tradeLog">
-      <div class="trade-entry info">🤖 Auto trader ready. Press Start to begin.</div>
-    </div>
+  <!-- SIGNAL CARDS -->
+  <div class="sig-grid" id="sigGrid">
+    <div class="sig-card weak"><div class="sig-type">Best Trade</div><div class="sig-val">Waiting…</div><span class="sig-conf conf-low">Need 10 ticks</span></div>
+    <div class="sig-card weak"><div class="sig-type">Even / Odd</div><div class="sig-val">—</div><span class="sig-conf conf-low">—</span></div>
+    <div class="sig-card weak"><div class="sig-type">Streak</div><div class="sig-val">—</div><span class="sig-conf conf-low">—</span></div>
+    <div class="sig-card weak"><div class="sig-type">Risk Level</div><div class="sig-val">—</div><span class="sig-conf conf-low">—</span></div>
   </div>
 
-  <!-- Tabs -->
+  <!-- AI Panel -->
+  <div class="ai-panel">
+    <div class="ai-header">
+      <div class="ai-icon">🧠</div>
+      <div>
+        <div class="ai-title">AI Trade Analyst</div>
+        <div class="ai-subtitle">Live analysis · Ask anything</div>
+      </div>
+      <button class="auto-btn" id="autoBtn" onclick="toggleAuto()">Auto: OFF</button>
+    </div>
+    <div class="chat-history" id="chatHistory"></div>
+    <div class="ai-pills" id="aiPills"><span class="ap ap-gray">Waiting for ticks…</span></div>
+    <div class="risk-row">
+      <span class="risk-label">Risk:</span>
+      <div class="risk-wrap"><div class="risk-bar" id="riskBar" style="width:0%;background:#22c55e;"></div></div>
+      <span class="risk-pct" id="riskPct">—</span>
+    </div>
+    <div class="ai-ask">
+      <input class="ai-input" id="aiInput" placeholder="Ask e.g. best trade now? even or odd?" onkeydown="if(event.key==='Enter')askAI()"/>
+      <button class="ai-send" onclick="askAI()">Ask</button>
+    </div>
+    <button class="analyze-btn" onclick="analyzeNow()">🔍 Analyze Now</button>
+  </div>
+
   <div class="card" style="padding:10px 16px;">
     <div class="tabs">
-      <button class="tab on" onclick="stab(this,'d')">Digit frequency</button>
-      <button class="tab" onclick="stab(this,'e')">Even / Odd</button>
+      <button class="tab on" onclick="stab(this,'d')">Digits</button>
+      <button class="tab" onclick="stab(this,'e')">Even/Odd</button>
       <button class="tab" onclick="stab(this,'s')">Signals</button>
     </div>
   </div>
@@ -323,7 +201,7 @@ input{font-family:inherit;}
       </div>
     </div>
     <div class="stl">Streak & suggestion</div>
-    <div class="sb2">
+    <div class="sb">
       <div class="sr"><span class="sl">Current streak</span><span class="pl pn" id="estr">—</span></div>
       <div class="sr"><span class="sl">Longest Even streak</span><span class="pl pe" id="eme">0</span></div>
       <div class="sr"><span class="sl">Longest Odd streak</span><span class="pl po" id="emo">0</span></div>
@@ -334,344 +212,129 @@ input{font-family:inherit;}
   </div>
 
   <div id="pnl-s" class="pnl">
-    <div class="stl">Matches / Differs signals</div>
-    <div class="sb2" id="smatch"></div>
-    <div class="stl">Over / Under signals</div>
-    <div class="sb2" id="sou"></div>
+    <div class="stl">Matches / Differs</div>
+    <div class="sb" id="smatch"></div>
+    <div class="stl">Over / Under</div>
+    <div class="sb" id="sou"></div>
   </div>
-
 </div>
 
 <script>
 const SYM={R_10:'V10',R_25:'V25',R_50:'V50',R_75:'V75',R_100:'V100'};
-let cur='R_10', ws, sid, apiToken=null;
-let autoTrading=false, consecLosses=0, totalTrades=0, totalWins=0, totalLosses=0, totalPnl=0;
-let waitingForResult=false, pendingContractId=null, pendingTradeType=null, pendingStake=0;
-let tradeTimeout=null;
+let cur='R_10',ws,sid,autoAnalyze=false,ticksSinceAI=0;
 const S={};
 Object.keys(SYM).forEach(k=>S[k]={counts:new Array(10).fill(0),ticks:[],ec:0,oc:0,me:0,mo:0,cs:0,ct:null});
 
-// ── TOKEN ──
-function connectWithToken(){
-  const t=document.getElementById('tokenInput').value.trim();
-  if(!t){document.getElementById('tokenErr').textContent='Please enter your token.';return;}
-  apiToken=t;
-  document.getElementById('tokenScreen').style.display='none';
-  document.getElementById('app').style.display='block';
-  connect();
-}
-function skipToken(){
-  apiToken=null;
-  document.getElementById('tokenScreen').style.display='none';
-  document.getElementById('app').style.display='block';
-  connect();
-}
-function logoutToken(){
-  stopAutoTrade();
-  if(ws)ws.close();
-  apiToken=null;
-  document.getElementById('tokenScreen').style.display='flex';
-  document.getElementById('app').style.display='none';
-  document.getElementById('tokenInput').value='';
-  document.getElementById('tokenErr').textContent='';
-}
-
-// ── WEBSOCKET ──
 function setStatus(t,txt){
   document.getElementById('dot').className='dot '+(t==='live'?'live':t==='err'?'err':'');
   document.getElementById('lbl').textContent=txt;
 }
-
 function connect(){
   setStatus('','Connecting…');
-  ws=new WebSocket('wss://ws.derivws.com/websockets/v3?app_id=33k0v9P0tKimEut2jNR1y');
-  ws.onopen=()=>{
-    if(apiToken){ws.send(JSON.stringify({authorize:apiToken}));}
-    else{setStatus('live','Connected · public ticks (analysis only)');sub(cur);logTrade('info','ℹ️ No token — analysis only. Token required for auto trading.');}
-  };
+  ws=new WebSocket('wss://ws.derivws.com/websockets/v3?app_id=36544');
+  ws.onopen=()=>{setStatus('live','Live · '+SYM[cur]+' · Public ticks');sub(cur);};
   ws.onmessage=e=>{
     const m=JSON.parse(e.data);
-
-    if(m.msg_type==='authorize'){
-      if(m.error){
-        setStatus('err','Token error: '+m.error.message);
-        document.getElementById('tokenScreen').style.display='flex';
-        document.getElementById('app').style.display='none';
-        document.getElementById('tokenErr').textContent='❌ '+m.error.message;
-        return;
-      }
-      const a=m.authorize;
-      setStatus('live','Connected · '+a.loginid+' · Demo');
-      document.getElementById('acctBar').style.display='flex';
-      document.getElementById('acctId').textContent=a.loginid;
-      document.getElementById('acctBal').textContent=(a.currency||'USD')+' '+parseFloat(a.balance||0).toFixed(2);
-      sub(cur);
-      logTrade('info','✅ Account connected: '+a.loginid+' | Balance: '+(a.currency||'USD')+' '+parseFloat(a.balance||0).toFixed(2));
-    }
-
     if(m.msg_type==='tick'&&m.tick){
       const sym=m.tick.symbol,q=m.tick.quote.toString(),d=parseInt(q[q.length-1]),s=S[sym];
       s.counts[d]++;s.ticks.push(d);if(s.ticks.length>60)s.ticks.shift();
       const ie=d%2===0;if(ie)s.ec++;else s.oc++;
       if(s.ct===null){s.ct=ie;s.cs=1;}else if(s.ct===ie)s.cs++;else{s.ct=ie;s.cs=1;}
       if(ie&&s.cs>s.me)s.me=s.cs;if(!ie&&s.cs>s.mo)s.mo=s.cs;
-      if(sym===cur){
-        render();
-        updateSignalDisplay();
-        if(autoTrading&&!waitingForResult&&apiToken){
-          checkAndTrade();
-        }
-      }
+      if(sym===cur){render();updateSigCards();ticksSinceAI++;if(autoAnalyze&&ticksSinceAI>=20){ticksSinceAI=0;analyzeNow();}}
     }
-
     if(m.subscription)sid=m.subscription.id;
-
-    // Handle buy response
-    if(m.msg_type==='buy'){
-      if(m.error){
-        logTrade('loss','❌ Trade error: '+m.error.message);
-        waitingForResult=false;
-        return;
-      }
-      pendingContractId=m.buy.contract_id;
-      logTrade('pending','⏳ Trade placed: '+pendingTradeType+' · $'+pendingStake.toFixed(2)+' · Contract #'+pendingContractId);
-      // Wait for contract to settle (poll after 2 seconds)
-      tradeTimeout=setTimeout(()=>checkContract(pendingContractId),2500);
-    }
-
-    // Handle proposal_open_contract (contract result)
-    if(m.msg_type==='proposal_open_contract'){
-      const c=m.proposal_open_contract;
-      if(c&&c.is_sold){
-        const profit=parseFloat(c.profit||0);
-        const won=profit>0;
-        totalTrades++;
-        totalPnl+=profit;
-        if(won){totalWins++;consecLosses=0;}
-        else{totalLosses++;consecLosses++;}
-        updateStats();
-        logTrade(won?'win':'loss',(won?'✅ WIN':'❌ LOSS')+' · '+pendingTradeType+' · P&L: $'+profit.toFixed(2)+' · Total P&L: $'+totalPnl.toFixed(2));
-        waitingForResult=false;
-        pendingContractId=null;
-        // Update balance
-        if(ws&&ws.readyState===1){ws.send(JSON.stringify({balance:1,account:'current'}));}
-        // Check stop condition
-        const stopAt=parseInt(document.getElementById('stopLossSelect').value);
-        if(consecLosses>=stopAt){
-          stopAutoTrade();
-          logTrade('loss','🛑 Auto stopped: '+consecLosses+' consecutive losses reached.');
-        }
-      }
-    }
-
-    if(m.msg_type==='balance'){
-      if(m.balance){
-        document.getElementById('acctBal').textContent=(m.balance.currency||'USD')+' '+parseFloat(m.balance.balance||0).toFixed(2);
-      }
-    }
   };
-  ws.onerror=()=>{setStatus('err','Error · click Reconnect');if(autoTrading)stopAutoTrade();};
-  ws.onclose=()=>{setStatus('err','Disconnected · click Reconnect');if(autoTrading)stopAutoTrade();};
+  ws.onerror=()=>setStatus('err','Error');
+  ws.onclose=()=>{setStatus('err','Reconnecting…');setTimeout(connect,3000);};
 }
-
-function checkContract(contractId){
-  if(!contractId||!ws||ws.readyState!==1)return;
-  ws.send(JSON.stringify({proposal_open_contract:1,contract_id:contractId}));
-  // Poll again if not settled
-  tradeTimeout=setTimeout(()=>{
-    if(waitingForResult&&pendingContractId){
-      ws.send(JSON.stringify({proposal_open_contract:1,contract_id:contractId}));
-    }
-  },3000);
-}
-
 function sub(sym){
   if(ws&&ws.readyState===1){
     if(sid){ws.send(JSON.stringify({forget:sid}));sid=null;}
     ws.send(JSON.stringify({ticks:sym,subscribe:1}));
-    setStatus('live','Live · '+SYM[sym]+(apiToken?' · Demo':' · public'));
+    setStatus('live','Live · '+SYM[sym]+' · Public ticks');
   }
 }
 function reconnect(){if(ws)ws.close();setTimeout(connect,300);}
 function sw(btn,sym){document.querySelectorAll('.ibtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');cur=sym;sub(sym);render();}
 function stab(btn,tab){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));document.getElementById('pnl-'+tab).classList.add('on');}
+function toggleAuto(){autoAnalyze=!autoAnalyze;const btn=document.getElementById('autoBtn');btn.textContent='Auto: '+(autoAnalyze?'ON':'OFF');btn.className='auto-btn'+(autoAnalyze?' on':'');addChat('ai',autoAnalyze?'✅ Auto-analysis ON.':'⏸ Auto off.');}
 
-// ── ANALYSIS ENGINE ──
 function getAnalysis(){
   const s=S[cur],total=s.ticks.length;
   if(total<10)return null;
   const t30=s.ticks.slice(-30);
-  const etot=s.ec+s.oc;
-  const epct=etot>0?Math.round((s.ec/etot)*100):50;
-  const opct=100-epct;
-  const hi=s.counts.indexOf(Math.max(...s.counts));
-  const lo=s.counts.indexOf(Math.min(...s.counts));
-  const hiPct=Math.round((s.counts[hi]/total)*100);
-  const loPct=Math.round((s.counts[lo]/total)*100);
-  const streak=s.cs, streakType=s.ct?'Even':'Odd';
-  let suggestions=[],risk=50,bestTrade='',contractType='',barrier='',confidence='Low';
-
-  if(s.cs>=8){
-    const opp=s.ct?'Odd':'Even';
-    bestTrade=opp; confidence='High'; risk=20;
-    contractType=opp==='Even'?'DIGITEVEN':'DIGITODD';
-    suggestions.push({type:opp,confidence:'High'});
-  } else if(s.cs>=5){
-    const opp=s.ct?'Odd':'Even';
-    bestTrade=opp; confidence='High'; risk=30;
-    contractType=opp==='Even'?'DIGITEVEN':'DIGITODD';
-    suggestions.push({type:opp,confidence:'High'});
-  } else if(s.cs>=4){
-    const opp=s.ct?'Odd':'Even';
-    bestTrade=opp; confidence='Medium'; risk=40;
-    contractType=opp==='Even'?'DIGITEVEN':'DIGITODD';
-    suggestions.push({type:opp,confidence:'Medium'});
-  } else if(hiPct>=20&&total>=20){
-    bestTrade='Differs '+hi; confidence='High'; risk=28;
-    contractType='DIGITDIFF'; barrier=String(hi);
-    suggestions.push({type:'Differs '+hi,confidence:'High'});
-  } else if(loPct<=3&&total>=20){
-    bestTrade='Matches '+lo; confidence='Medium'; risk=38;
-    contractType='DIGITMATCH'; barrier=String(lo);
-    suggestions.push({type:'Matches '+lo,confidence:'Medium'});
-  } else if(epct>65){
-    bestTrade='Odd'; confidence='Medium'; risk=42;
-    contractType='DIGITODD';
-    suggestions.push({type:'Odd',confidence:'Medium'});
-  } else if(opct>65){
-    bestTrade='Even'; confidence='Medium'; risk=42;
-    contractType='DIGITEVEN';
-    suggestions.push({type:'Even',confidence:'Medium'});
-  } else {
-    risk=65; confidence='Low';
-  }
-
-  const over4=t30.filter(t=>t>4).length, pOver=Math.round((over4/t30.length)*100);
-  if(!bestTrade&&pOver>70){bestTrade='Over 4';confidence='Medium';risk=35;contractType='DIGITOVER';barrier='4';}
-  if(!bestTrade&&pOver<30){bestTrade='Under 5';confidence='Medium';risk=35;contractType='DIGITUNDER';barrier='4';}
-
-  return{suggestions,risk,bestTrade,contractType,barrier,confidence,total,epct,opct,streak,streakType,hiDigit:hi,hiPct,loDigit:lo,loPct};
+  const etot=s.ec+s.oc,epct=etot>0?Math.round((s.ec/etot)*100):50,opct=100-epct;
+  const hi=s.counts.indexOf(Math.max(...s.counts)),lo=s.counts.indexOf(Math.min(...s.counts));
+  const hiPct=Math.round((s.counts[hi]/total)*100),loPct=Math.round((s.counts[lo]/total)*100);
+  const streak=s.cs,streakType=s.ct?'Even':'Odd';
+  let suggestions=[],warnings=[],risk=45,bestTrade='',reason='',confidence='Low';
+  if(s.cs>=6){const opp=s.ct?'Odd':'Even';suggestions.push({type:opp,confidence:'High'});risk=25;bestTrade=opp;confidence='High';reason=`🔥 ${streak}-tick ${streakType} streak! Trade ${opp} now. HIGH confidence.`;}
+  else if(s.cs>=4){const opp=s.ct?'Odd':'Even';suggestions.push({type:opp,confidence:'Medium'});risk=38;bestTrade=opp;confidence='Medium';reason=`${streak}-tick ${streakType} streak. Consider ${opp}. MEDIUM confidence.`;}
+  else if(epct>62){suggestions.push({type:'Odd',confidence:'Medium'});risk=42;bestTrade='Odd';confidence='Medium';reason=`Even at ${epct}% — Odd may be due. MEDIUM.`;}
+  else if(opct>62){suggestions.push({type:'Even',confidence:'Medium'});risk=42;bestTrade='Even';confidence='Medium';reason=`Odd at ${opct}% — Even may be due. MEDIUM.`;}
+  else{warnings.push('Balanced — wait');risk=65;reason=`Even/Odd balanced (${epct}/${opct}). Wait for pattern.`;}
+  if(hiPct>=18&&total>=20){suggestions.push({type:'Differs '+hi,confidence:'High'});if(risk>28)risk=28;}
+  if(loPct<=4&&total>=20){suggestions.push({type:'Matches '+lo,confidence:'Medium'});if(risk>38)risk=38;}
+  const pOver=Math.round((t30.filter(t=>t>4).length/t30.length)*100);
+  if(pOver>65)suggestions.push({type:'Over 4',confidence:'Medium'});
+  if(pOver<35)suggestions.push({type:'Under 5',confidence:'Medium'});
+  if(total<20){risk=Math.max(risk,65);warnings.push('Need more ticks');}
+  if(s.cs>=8){risk=15;confidence='High';reason=`🔥 STRONG: ${streak}-tick ${streakType} streak! Trade ${s.ct?'Odd':'Even'} NOW.`;}
+  return{suggestions,warnings,risk,bestTrade,reason,confidence,total,epct,opct,streak,streakType,hiDigit:hi,hiPct,loDigit:lo,loPct,pOver};
 }
 
-// ── AUTO TRADING ──
-function startAutoTrade(){
-  if(!apiToken){
-    logTrade('loss','❌ Cannot auto trade without a token. Please connect your demo account.');
-    return;
-  }
-  const s=S[cur];
-  if(s.ticks.length<10){
-    logTrade('info','⏳ Need at least 10 ticks before trading. Please wait…');
-    return;
-  }
-  autoTrading=true;
-  waitingForResult=false;
-  consecLosses=0;
-  document.getElementById('startBtn').disabled=true;
-  document.getElementById('stopBtn').disabled=false;
-  document.getElementById('atPanel').className='at-panel running';
-  setAtStatus('running','🟢 Running');
-  logTrade('info','🤖 Auto trader started on '+SYM[cur]+' · Stake: $'+parseFloat(document.getElementById('stakeInput').value).toFixed(2));
-}
-
-function stopAutoTrade(){
-  autoTrading=false;
-  waitingForResult=false;
-  if(tradeTimeout)clearTimeout(tradeTimeout);
-  document.getElementById('startBtn').disabled=false;
-  document.getElementById('stopBtn').disabled=true;
-  document.getElementById('atPanel').className='at-panel stopped';
-  setAtStatus('stopped','🔴 Stopped');
-}
-
-function setAtStatus(type,text){
-  const el=document.getElementById('atStatus');
-  el.className='status-badge sb-'+type;
-  el.textContent=text;
-}
-
-function checkAndTrade(){
+function updateSigCards(){
   const a=getAnalysis();
-  if(!a||waitingForResult)return;
-  const stake=parseFloat(document.getElementById('stakeInput').value)||0.35;
-  const tradeType=document.getElementById('tradeTypeSelect').value;
-  const minStrength=document.getElementById('signalStrengthSelect').value;
-  if(!a.bestTrade||!a.contractType)return;
-  // Check confidence threshold
-  if(minStrength==='high'&&a.confidence!=='High')return;
-  if(minStrength==='medium'&&a.confidence==='Low')return;
-  // Check trade type filter
-  if(tradeType==='even_odd'&&!['DIGITEVEN','DIGITODD'].includes(a.contractType))return;
-  if(tradeType==='matches_differs'&&!['DIGITMATCH','DIGITDIFF'].includes(a.contractType))return;
-  if(tradeType==='over_under'&&!['DIGITOVER','DIGITUNDER'].includes(a.contractType))return;
-  // Place trade
-  placeTrade(a.contractType, a.barrier, stake, a.bestTrade);
+  const g=document.getElementById('sigGrid');
+  if(!a){return;}
+  const riskCls=a.risk<=30?'strong':a.risk<=55?'medium':'weak';
+  const confCls=a.confidence==='High'?'strong':a.confidence==='Medium'?'medium':'weak';
+  const confBadge=a.confidence==='High'?'conf-high':a.confidence==='Medium'?'conf-med':'conf-low';
+  const streakCls=a.streak>=5?'strong':a.streak>=3?'medium':'weak';
+  const eoCls=a.streak>=4?'strong':'weak';
+  g.innerHTML=`
+    <div class="sig-card ${confCls}"><div class="sig-type">Best Trade</div><div class="sig-val">${a.bestTrade||'Wait'}</div><span class="sig-conf ${confBadge}">${a.confidence} confidence</span></div>
+    <div class="sig-card ${eoCls}"><div class="sig-type">Even / Odd</div><div class="sig-val">E:${a.epct}% O:${a.opct}%</div><span class="sig-conf ${a.epct>60||a.opct>60?'conf-med':'conf-low'}">${a.epct>60?'Even dominant':a.opct>60?'Odd dominant':'Balanced'}</span></div>
+    <div class="sig-card ${streakCls}"><div class="sig-type">Streak</div><div class="sig-val">${a.streak} ${a.streakType}</div><span class="sig-conf ${a.streak>=5?'conf-high':a.streak>=3?'conf-med':'conf-low'}">${a.streak>=5?'Strong signal':a.streak>=3?'Watch this':'No signal'}</span></div>
+    <div class="sig-card ${riskCls}"><div class="sig-type">Risk Level</div><div class="sig-val">${a.risk}%</div><span class="sig-conf ${a.risk<=30?'conf-high':a.risk<=55?'conf-med':'conf-low'}">${a.risk<=30?'LOW — Trade':a.risk<=55?'MODERATE':'HIGH — Wait'}</span></div>`;
 }
 
-function placeTrade(contractType, barrier, stake, label){
-  if(!ws||ws.readyState!==1||waitingForResult)return;
-  waitingForResult=true;
-  pendingTradeType=label;
-  pendingStake=stake;
-  const req={
-    buy:1,
-    price:stake,
-    parameters:{
-      amount:stake,
-      basis:'stake',
-      contract_type:contractType,
-      currency:'USD',
-      duration:1,
-      duration_unit:'t',
-      symbol:cur
-    }
-  };
-  if(barrier!==undefined&&barrier!==''){
-    req.parameters.barrier=barrier;
-  }
-  setAtStatus('waiting','⚡ Trading…');
-  ws.send(JSON.stringify(req));
-  logTrade('pending','⚡ Placing trade: '+label+' · $'+stake.toFixed(2)+' on '+SYM[cur]);
-}
-
-function updateStats(){
-  document.getElementById('statTrades').textContent=totalTrades;
-  document.getElementById('statWins').textContent=totalWins;
-  document.getElementById('statLosses').textContent=totalLosses;
-  const pnlEl=document.getElementById('statPnl');
-  pnlEl.textContent='$'+totalPnl.toFixed(2);
-  pnlEl.className='at-stat-val '+(totalPnl>0?'green':totalPnl<0?'red':'yellow');
-  document.getElementById('sigConsecLoss').textContent=consecLosses;
-  document.getElementById('sigConsecLoss').className='signal-val '+(consecLosses>=3?'sv-red':consecLosses>=1?'sv-yellow':'sv-green');
-  if(autoTrading)setAtStatus('running','🟢 Running');
-}
-
-function updateSignalDisplay(){
+function analyzeNow(){
   const a=getAnalysis();
-  if(!a)return;
-  document.getElementById('sigBest').textContent=a.bestTrade||'Waiting…';
-  document.getElementById('sigBest').className='signal-val '+(a.confidence==='High'?'sv-green':a.confidence==='Medium'?'sv-yellow':'sv-gray');
-  document.getElementById('sigConf').textContent=a.confidence;
-  document.getElementById('sigConf').className='signal-val '+(a.confidence==='High'?'sv-green':a.confidence==='Medium'?'sv-yellow':'sv-gray');
-  document.getElementById('sigRisk').textContent=a.risk+'% '+(a.risk<=30?'LOW':a.risk<=55?'MOD':'HIGH');
-  document.getElementById('sigRisk').className='signal-val '+(a.risk<=30?'sv-green':a.risk<=55?'sv-yellow':'sv-red');
-  document.getElementById('sigStreak').textContent=a.streak+' '+a.streakType;
-  document.getElementById('sigStreak').className='signal-val '+(a.streak>=5?'sv-green':a.streak>=3?'sv-yellow':'sv-gray');
+  if(!a){addChat('ai','⏳ Need 10+ ticks. Please wait…');return;}
+  let msg=`📊 ${SYM[cur]} (${a.total} ticks)\n\n${a.reason}`;
+  if(a.warnings.length)msg+='\n⚠️ '+a.warnings.join(' | ');
+  msg+=`\n\nTop signals:`;
+  a.suggestions.slice(0,3).forEach(s=>msg+=`\n▶ ${s.type} (${s.confidence})`);
+  msg+=`\n\nRisk: ${a.risk<=30?'🟢 LOW':a.risk<=55?'🟡 MODERATE':'🔴 HIGH'} (${a.risk}%)`;
+  addChatClass(a.risk<=30?'chat-good':a.risk>=65?'chat-warn':'chat-ai',msg);
+  updatePills(a);updateRisk(a.risk);
 }
 
-function logTrade(type, msg){
-  const log=document.getElementById('tradeLog');
-  const d=document.createElement('div');
-  d.className='trade-entry '+type;
-  const time=new Date().toLocaleTimeString();
-  d.innerHTML='<span>'+msg+'</span><span style="font-size:10px;color:#64748b;">'+time+'</span>';
-  log.appendChild(d);
-  log.scrollTop=log.scrollHeight;
-  // Keep max 50 entries
-  while(log.children.length>50)log.removeChild(log.firstChild);
+function askAI(){
+  const input=document.getElementById('aiInput');
+  const q=input.value.trim();if(!q)return;
+  input.value='';addChat('user',q);
+  const a=getAnalysis();
+  if(!a){addChat('ai','⏳ Need 10+ ticks.');return;}
+  const ql=q.toLowerCase();let reply='';
+  if(ql.includes('even')||ql.includes('odd')){reply=`Even: ${a.epct}%, Odd: ${a.opct}%. Streak: ${a.streak} ${a.streakType}. ${a.streak>=4?`Trade ${a.streakType==='Even'?'Odd':'Even'} — reversal signal!`:'No clear streak yet.'} Risk: ${a.risk}%.`;}
+  else if(ql.includes('match')){reply=`Best Matches: digit ${a.loDigit} (coldest at ${a.loPct}%). ⚠️ Only ~10% win rate — high risk.`;}
+  else if(ql.includes('differ')){reply=`Best Differs: digit ${a.hiDigit} (hottest at ${a.hiPct}%). Good signal. Risk: ${a.risk<=40?'LOW':'MODERATE'}.`;}
+  else if(ql.includes('over')||ql.includes('under')){reply=`Over 4: ${a.pOver}% of last 30. ${a.pOver>60?'Over 4 trending — consider Over 4.':a.pOver<40?'Under 5 trending.':'Balanced.'}`;}
+  else if(ql.includes('best')||ql.includes('should')||ql.includes('trade')||ql.includes('now')){reply=a.reason+`\n\nBest: ${a.bestTrade||'Wait'}. Risk: ${a.risk<=30?'🟢 LOW':a.risk<=55?'🟡 MOD':'🔴 HIGH'} (${a.risk}%).`;}
+  else if(ql.includes('risk')){reply=`Risk: ${a.risk}% (${a.risk<=30?'LOW 🟢':a.risk<=55?'MODERATE 🟡':'HIGH 🔴'}). ${a.warnings.length?'⚠️ '+a.warnings[0]:'Looks tradeable.'}`;}
+  else if(ql.includes('streak')){reply=`Streak: ${a.streak} ${a.streakType}. ${a.streak>=6?`Strong! Trade ${a.streakType==='Even'?'Odd':'Even'} now.`:a.streak>=4?`Consider ${a.streakType==='Even'?'Odd':'Even'}.`:'Too short — wait for 4+.'}`;}
+  else{reply=`${SYM[cur]} (${a.total} ticks): ${a.reason} Best: ${a.bestTrade||'Wait'}. Risk: ${a.risk}%.`;}
+  addChat('ai',reply);updatePills(a);updateRisk(a.risk);
 }
 
-// ── RENDER ──
+function addChat(role,msg){addChatClass(role==='user'?'chat-user':'chat-ai',msg);}
+function addChatClass(cls,msg){const h=document.getElementById('chatHistory');const d=document.createElement('div');d.className='chat-bubble '+cls;d.textContent=msg;h.appendChild(d);h.scrollTop=h.scrollHeight;}
+function updatePills(a){const p=document.getElementById('aiPills');if(!a||!a.suggestions.length){p.innerHTML='<span class="ap ap-gray">Waiting…</span>';return;}p.innerHTML=a.suggestions.slice(0,4).map(s=>{const t=s.type.toLowerCase();const cls=t.includes('even')||t.includes('matches')||t.includes('over')?'ap-green':t.includes('odd')||t.includes('differs')||t.includes('under')?'ap-yellow':'ap-blue';return`<span class="ap ${cls}">▶ ${s.type} (${s.confidence})</span>`;}).join('')+(a.warnings.length?`<span class="ap ap-red">⚠ ${a.warnings[0]}</span>`:'');}
+function updateRisk(risk){const rb=document.getElementById('riskBar'),rp=document.getElementById('riskPct');rb.style.width=risk+'%';rb.style.background=risk>=65?'#ef4444':risk>=45?'#f59e0b':'#22c55e';rp.textContent=risk+'% '+(risk>=65?'HIGH':risk>=45?'MOD':'LOW');}
+
 function render(){
   const s=S[cur],total=s.ticks.length,mx=Math.max(...s.counts,1);
   const hi=s.counts.indexOf(Math.max(...s.counts)),lo=s.counts.indexOf(Math.min(...s.counts));
@@ -710,6 +373,9 @@ function render(){
   [4,5,6,7].forEach(th=>{const cnt=s.ticks.filter(t=>t<th).length,pct=total>0?Math.round((cnt/total)*100):0,cl=pct>55?'pm':pct<45?'pd':'pn';oh+=`<div class="sr"><span class="sl">Under ${th}</span><span class="pl ${cl}">${pct}%</span></div>`;});
   document.getElementById('sou').innerHTML=oh;
 }
+
+connect();
+setTimeout(()=>addChat('ai','👋 Hi! Live on '+SYM[cur]+'. Once 10+ ticks load, click Analyze Now or ask me anything — "best trade now", "even or odd?", "streak?", "risk level".'),800);
 render();
 </script>
 </body>
