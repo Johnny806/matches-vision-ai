@@ -471,7 +471,7 @@ function connect(){
     }
   };
   ws.onerror=()=>{setStatus('err','Error · click Reconnect');if(autoTrading)stopAutoTrade();};
-  ws.onclose=()=>{setStatus('err','Disconnected · click Reconnect');if(autoTrading)stopAutoTrade();};
+  ws.onclose=()=>{setStatus('err','Reconnecting…');if(autoTrading)stopAutoTrade();setTimeout(connect,3000);};
 }
 
 function checkContract(contractId){
