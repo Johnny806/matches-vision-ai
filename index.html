@@ -384,7 +384,7 @@ function setStatus(t,txt){
 
 function connect(){
   setStatus('','Connecting…');
-  ws=new WebSocket('wss://ws.derivws.com/websockets/v3?app_id=36544');
+  ws=new WebSocket('wss://ws.derivws.com/websockets/v3?app_id=33k0v9P0tKimEut2jNR1y');
   ws.onopen=()=>{
     if(apiToken){ws.send(JSON.stringify({authorize:apiToken}));}
     else{setStatus('live','Connected · public ticks (analysis only)');sub(cur);logTrade('info','ℹ️ No token — analysis only. Token required for auto trading.');}
@@ -471,7 +471,7 @@ function connect(){
     }
   };
   ws.onerror=()=>{setStatus('err','Error · click Reconnect');if(autoTrading)stopAutoTrade();};
-  ws.onclose=()=>{setStatus('err','Reconnecting…');if(autoTrading)stopAutoTrade();setTimeout(connect,3000);};
+  ws.onclose=()=>{setStatus('err','Disconnected · click Reconnect');if(autoTrading)stopAutoTrade();};
 }
 
 function checkContract(contractId){
